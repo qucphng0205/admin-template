@@ -1,0 +1,14 @@
+.ph-page {
+  display: flex;
+}
+
+.ph-content {
+  display: flex;
+  flex-direction: column;
+
+  flex: 1;
+}
+
+.ph-body {
+  background-color: #faf9f9;
+}

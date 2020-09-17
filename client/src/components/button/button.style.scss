@@ -1,0 +1,67 @@
+.btn {
+  display: inline-block;
+  padding: 0.7rem 0.75rem;
+
+  font-size: 1.4rem;
+  font-weight: 400;
+  text-align: center;
+  vertical-align: middle;
+
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+
+  &--primary {
+    background-color: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-white);
+  }
+
+  &--primary-outline {
+    color: var(--color-primary);
+  }
+
+  &--success {
+    background-color: var(--color-success);
+    border-color: var(--color-success);
+    color: var(--color-white);
+  }
+
+  &--success-outline {
+    color: var(--color-success);
+  }
+
+  &--warning {
+    background-color: var(--color-warning);
+    border-color: var(--color-warning);
+    color: var(--color-white);
+  }
+
+  &--warning-outline {
+    color: var(--color-warning);
+  }
+
+  &--danger {
+    background-color: var(--color-danger);
+    border-color: var(--color-danger);
+    color: var(--color-white);
+  }
+
+  &--danger-outline {
+    color: var(--color-danger);
+  }
+
+  &--dark {
+    background-color: var(--color-dark);
+    border-color: var(--color-dark);
+    color: var(--color-white);
+  }
+
+  &--dark-outline {
+    color: var(--color-dark);
+  }
+}
+
+[class$="outline"] {
+  background-color: transparent;
+  border: 1px solid currentColor;
+}

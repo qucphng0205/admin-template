@@ -1,0 +1,32 @@
+.form {
+  &__group {
+    &:not(:last-of-type) {
+      margin-bottom: 1.75rem;
+    }
+    &:last-of-type {
+      margin-bottom: 3rem;
+    }
+
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__input {
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.2f);
+    padding: 1rem 1.5rem;
+    display: block;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__label {
+    font-size: 1.4rem;
+    display: block;
+    margin-bottom: 0.7rem;
+    text-transform: capitalize;
+    color: var(--color-dark-2);
+  }
+}

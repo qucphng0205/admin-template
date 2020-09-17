@@ -1,0 +1,21 @@
+.ph-header {
+  display: flex;
+  align-items: center;
+
+  background-color: var(--color-dark-1);
+
+  &__title-icon {
+    margin: 0 1.25rem;
+  }
+}
+
+.user-nav {
+  display: flex;
+  align-items: center;
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  margin-right: auto;
+}

@@ -1,0 +1,27 @@
+.navbox {
+  display: flex;
+  align-items: center;
+
+  padding: 1rem 1rem;
+
+  cursor: pointer;
+
+  &__text {
+    color: var(--color-text);
+    font-size: 1.4rem;
+    margin: 0 1rem;
+    display: inline-block;
+  }
+
+  // &__icon {
+  //   min-width: 2rem;
+  // }
+
+  &--black:hover {
+    background-color: var(--color-dark);
+  }
+
+  &--primary:hover {
+    background-color: var(--color-primary);
+  }
+}
