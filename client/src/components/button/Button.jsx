@@ -2,6 +2,8 @@ import React from 'react';
 import "./button.style.scss";
 
 const STYLES = {
+  transparent: "btn--transparent",
+
   primary: "btn--primary",
   warning: "btn--warning",
   danger: "btn--danger",
@@ -21,18 +23,19 @@ const SIZES = {
   lg: "btn--lg",
 };
 
-export const Button = ({ type, variant, children, size, className }) => {
+export const Button = ({ type, variant, children, size, className, active, ...rest }) => {
 
   const setButtonStyle = STYLES[variant] ? STYLES[variant] : STYLES['primary'];
   const setButtonSize = SIZES[size] ? SIZES[size] : SIZES['md'];
   const extendClass = className ? className : '';
 
-  return <button type={type} className={`btn ${setButtonSize} ${extendClass} ${setButtonStyle}`} >{children}</button>
+  return <button type={type} className={`btn ${setButtonSize} ${extendClass} ${setButtonStyle} ${active ? 'active' : ''}`} {...rest} >{children}</button>
 }
 
 Button.defaultProps = {
-  variant: 'primary',
+  variant: 'transparent',
   size: 'md',
   className: '',
   type: 'button',
+  active: false,
 }

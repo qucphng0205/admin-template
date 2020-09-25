@@ -1,8 +1,9 @@
 import React from 'react';
+import PhTextEditor from '../ph-text-editor/PhTextEditor';
 
 const PhDashboard = () => {
   return (<div>
-    {/* <h1 className="header-1">Posts</h1> */}
+    {/* <PhTextEditor /> */}
   </div>);
 }
 

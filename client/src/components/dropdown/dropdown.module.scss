@@ -1,0 +1,31 @@
+.dropdown {
+  display: inline-block;
+  position: relative;
+
+  &Toggle {
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: var(--color-surface);
+    padding: 0.5rem 0.75rem;
+    min-width: 9rem;
+    &::after {
+      content: "\25BE";
+      margin-left: 0.5rem;
+    }
+  }
+
+  &Menu {
+    position: absolute;
+    padding: 0.5rem 0.5rem;
+    top: 120%;
+    background-color: #fff;
+    box-shadow: -0.3rem 0.75rem 0.5rem rgba(0, 0, 0, 0.05);
+  }
+
+  &Item {
+    &:hover {
+      // filter: brightness(0.9);
+    }
+  }
+}

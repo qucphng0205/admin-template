@@ -10,5 +10,6 @@
 }
 
 .ph-body {
-  background-color: #faf9f9;
+  background-color: var(--color-background);
+  flex-basis: 100%;
 }

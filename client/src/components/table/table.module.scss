@@ -1,7 +1,3 @@
-.phPosts {
-  padding: 2rem 2rem;
-}
-
 .table {
   table-layout: fixed;
   border-collapse: collapse;
@@ -15,7 +11,7 @@
     }
   }
 
-  &Row:hover &Hidden {
+  &Row:hover &ItemRowHover {
     visibility: visible;
   }
 
@@ -31,7 +27,7 @@
     }
   }
 
-  &Hidden {
+  &ItemRowHover {
     visibility: hidden;
   }
 }

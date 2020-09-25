@@ -1,0 +1,28 @@
+.inlineList {
+  list-style: none;
+  font-size: 1.4rem;
+  display: flex;
+
+  &Item {
+    &:not(:last-child) {
+      &::after {
+        content: "";
+        margin: 0 0.7rem;
+        background-color: var(--color-dark-2);
+        height: 1rem;
+        width: 0.5px;
+        display: inline-block;
+      }
+    }
+  }
+
+  &Link {
+    text-decoration: none;
+    color: var(--color-link);
+    cursor: pointer;
+  }
+
+  &ItemActive {
+    color: var(--color-primary);
+  }
+}

@@ -1,0 +1,49 @@
+blockquote {
+  border-left: 2px solid #ddd;
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 10px;
+  color: #aaa;
+  font-style: italic;
+}
+
+blockquote[dir="rtl"] {
+  border-left: none;
+  padding-left: 0;
+  padding-right: 10px;
+  border-right: 2px solid #ddd;
+}
+
+[data-slate-editor] > * + * {
+  margin-top: 0.5em;
+}
+
+.textEditor {
+  .editorField {
+    padding: 2rem 10rem;
+    background-color: var(--color-surface);
+  }
+}
+
+.toolBar {
+  display: flex;
+  position: sticky;
+  top: 1rem;
+  align-items: center;
+  background-color: var(--color-surface);
+  box-shadow: 0 0.4rem 0.2rem rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 2rem;
+  margin: 1rem 10rem 2rem 10rem;
+  border-radius: 1.2rem;
+
+  &Item {
+    display: flex;
+    justify-content: center;
+
+    &::after {
+      width: 120%;
+      border-right: solid 1px var(--color-gray-2);
+      content: "";
+    }
+  }
+}

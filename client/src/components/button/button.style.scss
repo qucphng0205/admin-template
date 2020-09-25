@@ -1,6 +1,7 @@
 .btn {
   display: inline-block;
   padding: 0.7rem 0.75rem;
+  margin: 0.35rem;
 
   font-size: 1.4rem;
   font-weight: 400;
@@ -9,6 +10,19 @@
 
   border: 1px solid transparent;
   border-radius: 0.25rem;
+
+  cursor: pointer;
+
+  transition: transform 0.2s;
+
+  &--transparent {
+    background-color: transparent;
+    padding: 0.35rem 0.5rem;
+  }
+
+  &--transparent.active {
+    background-color: var(--color-primary-light);
+  }
 
   &--primary {
     background-color: var(--color-primary);
@@ -59,9 +73,13 @@
   &--dark-outline {
     color: var(--color-dark);
   }
-}
 
-[class$="outline"] {
-  background-color: transparent;
-  border: 1px solid currentColor;
+  &:hover {
+    filter: brightness(95%);
+  }
+
+  &[class*="outline"] {
+    background-color: transparent;
+    border: 1px solid currentColor;
+  }
 }
