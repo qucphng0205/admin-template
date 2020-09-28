@@ -5,6 +5,10 @@ export const InlineList = ({ children, className }) => {
   return (<ul className={`${styles.inlineList} ${className}`}>{children}</ul>)
 }
 
+InlineList.defaultProps = {
+  className: '',
+}
+
 export const InlineListItem = ({ children }) => {
   return (<li className={styles.inlineListItem}>
     {children}
@@ -14,16 +18,3 @@ export const InlineListItem = ({ children }) => {
 export const InlineListLink = ({ children, onClick }) => {
   return (<span href="/" className={styles.inlineListLink} onClick={onClick}>{children}</span>);
 }
-
-
-
-//   <li className={styles.inlineListItem}>
-//     <a href="#published" className={styles.inlineListLink}>Published</a>
-//   </li>
-//   <li className={styles.inlineListItem}>
-//     <a href="#drafts" className={styles.inlineListLink}>Drafts</a>
-//   </li>
-//   <li className={styles.inlineListItem}>
-//     <a href="#trash" className={styles.inlineListLink}>Trash</a>
-//   </li>
-// </ul >

@@ -19,7 +19,7 @@ const PhSidenav = () => {
             <NavBox icon={FaBookOpen} text='Posts' variant="hoverPrimary" iconSize='1.4rem' />
           </NavLink>
         </li>
-        <li className="sidenav__item">
+        {/* <li className="sidenav__item">
           <a href="/" className="sidenav__link">
             <NavBox icon={FaPager} text='Pages' variant="hoverPrimary" iconSize='1.4rem' />
           </a>
@@ -28,17 +28,17 @@ const PhSidenav = () => {
           <a href="/" className="sidenav__link">
             <NavBox icon={FaPhotoVideo} text='Media' variant="hoverPrimary" iconSize='1.4rem' />
           </a>
-        </li>
+        </li> */}
         <li className="sidenav__item">
-          <a href="/" className="sidenav__link">
+          <NavLink exact to="/ph-admin/comments" className="sidenav__link" activeClassName="sidenav__link--active">
             <NavBox icon={FaCommentAlt} text='Comments' variant="hoverPrimary" iconSize='1.4rem' />
-          </a>
+          </NavLink>
         </li>
-        <li className="sidenav__item">
+        {/* <li className="sidenav__item">
           <a href="/" className="sidenav__link">
             <NavBox icon={FaCubes} text='Feedback' variant="hoverPrimary" iconSize='1.4rem' />
           </a>
-        </li>
+        </li> */}
       </ul>
     </nav>
   );

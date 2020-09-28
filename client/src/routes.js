@@ -1,4 +1,5 @@
 import React from "react";
+import PhComments from "./pages/admin_page/components/ph-comments/PhComments";
 import PhDashboard from "./pages/admin_page/components/ph-dashboard/PhDashboard";
 import PhPostEditor from "./pages/admin_page/components/ph-post-editor/PhPostEditor";
 import PhPosts from "./pages/admin_page/components/ph-posts/PhPosts";
@@ -17,10 +18,22 @@ const routes = [
     component: PhPosts,
   },
   {
+    path: "/ph-admin/posts/add-new",
+    exact: true,
+    name: "Ph Post Editor",
+    component: PhPostEditor,
+  },
+  {
     path: "/ph-admin/posts/:id",
     exact: true,
     name: "Ph Post Editor",
     component: PhPostEditor,
+  },
+  {
+    path: "/ph-admin/comments",
+    exact: true,
+    name: "Ph Comments",
+    component: PhComments,
   },
   // { path: "/ph-admin/posts/add-new", exact: true, name: "Ph Create Post" },
   // { path: "/ph-admin/media", exact: true, name: "Ph Media" },

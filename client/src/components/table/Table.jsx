@@ -9,7 +9,7 @@ export const TableBody = ({ children }) => (<tbody>{children}</tbody>)
 
 export const TableHead = ({ children }) => (<th className={styles.tableCell}>{children}</th>)
 
-export const TableCell = ({ children, center }) => (<td className={`${styles.tableCell} ${center ? styles.tableCellCenter : null}`}>{children}</td>)
+export const TableCell = ({ children, center }) => (<td className={`${styles.tableCell}${center ? ' ' + styles.tableCellCenter : ''}`}>{children}</td>)
 
 export const TableRow = ({ children }) => (<tr className={styles.tableRow}>{children}</tr>)
 

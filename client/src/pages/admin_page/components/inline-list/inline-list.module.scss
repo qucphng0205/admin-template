@@ -4,15 +4,24 @@
   display: flex;
 
   &Item {
-    &:not(:last-child) {
+    position: relative;
+    &:not(:last-of-type) {
+    margin-right: 2rem;
+
       &::after {
         content: "";
-        margin: 0 0.7rem;
-        background-color: var(--color-dark-2);
-        height: 1rem;
-        width: 0.5px;
-        display: inline-block;
+        width: 1px;
+        height: 1.5rem;
+        position: absolute;
+        left: calc(100% + 1rem);
+        background-color: var(--color-gray-2);
       }
+    }
+
+    a:link,
+    a:visited {
+      color: var(--color-link);
+      text-decoration: none;
     }
   }
 

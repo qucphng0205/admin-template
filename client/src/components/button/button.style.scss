@@ -78,6 +78,10 @@
     filter: brightness(95%);
   }
 
+  &:focus {
+    outline: none;
+  }
+
   &[class*="outline"] {
     background-color: transparent;
     border: 1px solid currentColor;

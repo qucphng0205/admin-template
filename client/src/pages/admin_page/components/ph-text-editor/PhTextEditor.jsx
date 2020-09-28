@@ -18,6 +18,8 @@ import SlateDropdrown from './SlateDropdown';
 import BlockStyleButton from './BlockStyleButton';
 import { Button } from '../../../../components/button/Button';
 
+import Html from "slate-html-serializer";
+
 const PhTextEditor = ({ content, onSave }) => {
 
   const editor = useMemo(() => withReact(createEditor()), []);
@@ -43,19 +45,19 @@ const PhTextEditor = ({ content, onSave }) => {
         <div className={styles.toolBarItem}>
           <SlateDropdrown render={(state) => {
             return (<Dropdown initialTitle={state} >
-              <DropdownItem name='Paragraph'><BlockButton format='paragraph' text='Paragraph' /></DropdownItem>
-              <DropdownItem name='Headline 1'><BlockButton format='heading-one' text='Heading 1' /></DropdownItem>
-              <DropdownItem name='Headline 2'><BlockButton format='heading-two' text='Heading 2' /></DropdownItem>
-              <DropdownItem name='Headline 3'><BlockButton format='heading-three' text='Heading 3' /></DropdownItem>
+              <DropdownItem name='Paragraph'><BlockButton format={BLOCK_TAGS.p} text='Paragraph' /></DropdownItem>
+              <DropdownItem name='Headline 1'><BlockButton format={BLOCK_TAGS.h1} text='Heading 1' /></DropdownItem>
+              <DropdownItem name='Headline 2'><BlockButton format={BLOCK_TAGS.h2} text='Heading 2' /></DropdownItem>
+              <DropdownItem name='Headline 3'><BlockButton format={BLOCK_TAGS.h3} text='Heading 3' /></DropdownItem>
             </Dropdown>);
           }} />
         </div>
 
         <div className={styles.toolBarItem}>
-          <MarkButton format='bold' icon={BsTypeBold} />
-          <MarkButton format='italic' icon={BsTypeItalic} />
-          <MarkButton format='underline' icon={BsTypeUnderline} />
-          <MarkButton format='code' icon={BsCodeSlash} />
+          <MarkButton format={MARK_TAGS.strong} icon={BsTypeBold} />
+          <MarkButton format={MARK_TAGS.em} icon={BsTypeItalic} />
+          <MarkButton format={MARK_TAGS.u} icon={BsTypeUnderline} />
+          <MarkButton format={MARK_TAGS.code} icon={BsCodeSlash} />
         </div>
 
         <div className={styles.toolBarItem}>
@@ -65,9 +67,9 @@ const PhTextEditor = ({ content, onSave }) => {
         </div>
 
         <div className={styles.toolBarItem}>
-          <BlockStyleButton blockStyle='align-left' icon={AiOutlineAlignLeft} />
-          <BlockStyleButton blockStyle='align-center' icon={AiOutlineAlignCenter} />
-          <BlockStyleButton blockStyle='align-right' icon={AiOutlineAlignRight} />
+          <BlockStyleButton blockStyle={BLOCK_STYLE_TAGS.alignLeft} icon={AiOutlineAlignLeft} />
+          <BlockStyleButton blockStyle={BLOCK_STYLE_TAGS.alignCenter} icon={AiOutlineAlignCenter} />
+          <BlockStyleButton blockStyle={BLOCK_STYLE_TAGS.alignRight} icon={AiOutlineAlignRight} />
         </div>
 
         <div className={styles.toolBarItem}>
@@ -114,43 +116,69 @@ const PhTextEditor = ({ content, onSave }) => {
   </div >
 }
 
+const BLOCK_TAGS = {
+  p: 'paragraph',
+  li: 'list-item',
+  ul: 'bulleted-list',
+  ol: 'numbered-list',
+  quote: 'quote',
+  pre: 'code',
+  h1: 'heading-one',
+  h2: 'heading-two',
+  h3: 'heading-three',
+}
+
+const BLOCK_STYLE_TAGS = {
+  alignLeft: 'align-left',
+  alignRight: 'align-right',
+  alignCenter: 'align-center',
+}
+
+const MARK_TAGS = {
+  strong: 'bold',
+  em: 'italic',
+  u: 'underline',
+  s: 'strikethrough',
+  code: 'code',
+}
+
 const Element = ({ attributes, children, element }) => {
   let style = {};
   switch (element.style) {
-    case 'align-left':
+    case BLOCK_STYLE_TAGS.alignLeft:
       style = {};
       break;
-    case 'align-right':
+    case BLOCK_STYLE_TAGS.alignRight:
       style = { textAlign: 'right' };
       break;
-    case 'align-center':
+    case BLOCK_STYLE_TAGS.alignCenter:
       style = { textAlign: 'center' };
       break;
   }
 
   switch (element.type) {
-    case 'code':
+    case BLOCK_TAGS.pre:
       return (
         <pre style={style} {...attributes}>
           <code>{children}</code>
         </pre>
       );
 
-    case 'block-quote':
+    case BLOCK_TAGS.quote:
       return <blockquote style={style} {...attributes}>{children}</blockquote>
 
-    case 'heading-one':
+    case BLOCK_TAGS.h1:
       return <h1 style={style} {...attributes}>{children}</h1>
-    case 'heading-two':
+    case BLOCK_TAGS.h2:
       return <h2 style={style} {...attributes}>{children}</h2>
-    case 'heading-three':
+    case BLOCK_TAGS.h3:
       return <h3 style={style} {...attributes}>{children}</h3>
 
-    case 'list-item':
+    case BLOCK_TAGS.li:
       return <li style={style} {...attributes}>{children}</li>
-    case 'numbered-list':
+    case BLOCK_TAGS.ol:
       return <ol style={style, { paddingInlineStart: '4rem' }} {...attributes}>{children}</ol>
-    case 'bulleted-list':
+    case BLOCK_TAGS.ul:
       return <ul style={style, { paddingInlineStart: '4rem' }} {...attributes}>{children}</ul>
     default: return <p style={style} {...attributes}>{children}</p>
   }
@@ -175,5 +203,62 @@ const Leaf = ({ attributes, leaf, children }) => {
 
   return <span {...attributes}>{children}</span>
 }
+
+const RULES = [
+  {
+    deserialize(el, next) {
+      const block = BLOCK_TAGS[el.tagName.toLowerCase()];
+      if (block) {
+        return {
+          object: 'block',
+          type: block,
+          data: {
+            className: el.getAttribute('class'),
+          },
+          nodes: next(el.childNodes),
+        }
+      }
+    },
+    serialize(obj, children) {
+      if (obj.object == 'block')
+        switch (obj.type) {
+          case (BLOCK_TAGS.p):
+            return <p className={obj.data.get('className')}>{children}</p>
+          case (BLOCK_TAGS.h1):
+            return <h1 className={obj.data.get('className')}>{children}</h1>
+          case (BLOCK_TAGS.h2):
+            return <h2 className={obj.data.get('className')}>{children}</h2>
+          case (BLOCK_TAGS.h3):
+            return <h3 className={obj.data.get('className')}>{children}</h3>
+        }
+    }
+  },
+  {
+    deserialze(el, next) {
+      const type = MARK_TAGS[el.tagName.toLowerCase()];
+      if (type) {
+        return {
+          object: 'mark',
+          type: type,
+          nodes: next(el.childNodes),
+        }
+      }
+    },
+
+    serialize(obj, children) {
+      if (obj.object == 'mark') {
+        switch (obj.type) {
+          case MARK_TAGS.strong:
+            return <strong>{children}</strong>
+          case MARK_TAGS.em:
+            return <em>{children}</em>
+          case MARK_TAGS.u:
+            return <u>{children}</u>
+        }
+      }
+    }
+  }
+];
+const html = new Html({ rules });
 
 export default PhTextEditor;
