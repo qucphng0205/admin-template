@@ -4,10 +4,7 @@ import PhTextEditor from '../ph-text-editor/PhTextEditor';
 import { act_SavePost } from '../../../../redux/post/post.action';
 import { Redirect } from 'react-router-dom';
 
-
-
-
-const PhPostEditor = ({ posts, match, savePost, history }) => {
+const PhPostEditor = ({ posts, match, savePost }) => {
   console.log('PhPostEditor re-render');
   const [postCount, setPostCount] = useState(posts.length);
 
@@ -31,9 +28,10 @@ const PhPostEditor = ({ posts, match, savePost, history }) => {
   console.log('CONTENT: ');
   console.log(post);
 
-  const onSave = useCallback((content) => {
+  const onSave = useCallback((content, excerpt) => {
     post.content = content;
     post.date = Date.now().toString();
+    post.excerpt = excerpt;
     savePost(post);
   }, []);
   if (postCount < posts.length)

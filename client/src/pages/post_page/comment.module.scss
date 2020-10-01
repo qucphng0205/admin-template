@@ -1,0 +1,22 @@
+.comment {
+  &:not(:last-child) {
+    margin-bottom: 2rem;
+  }
+
+  padding: 3rem 2.5rem;
+  width: 100%;
+  box-shadow: 0 0 1.4rem rgba(0, 0, 0, 0.1);
+
+  .commentAuthor {
+    margin-left: 1.5rem;
+    font-size: 1.6rem;
+    .commentAuthorEmail {
+      color: var(--color-gray-2);
+    }
+  }
+
+  .commentContent {
+    margin-top: 2rem;
+    font-size: 1.8rem;
+  }
+}

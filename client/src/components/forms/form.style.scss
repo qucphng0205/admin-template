@@ -22,6 +22,17 @@
     }
   }
 
+  &__textarea {
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.2f);
+    padding: 1rem 1.5rem;
+    display: block;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
   &__label {
     font-size: 1.4rem;
     display: block;

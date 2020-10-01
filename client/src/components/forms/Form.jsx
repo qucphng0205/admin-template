@@ -6,19 +6,24 @@ export const Form = ({ className, onSubmit, children }) => {
   return <form onSubmit={onSubmit} className={`form ${extendClass}`}>{children}</form>
 }
 
-export const FormGroup = ({ children, id }) => {
+export const FormGroup = ({ children, ...otherProps }) => {
   return (
-    <div className="form__group" id={id}>
+    <div className="form__group" {...otherProps}>
       {children}
     </div>
   );
 }
 
-export const FormInput = ({ type, id, value, onChange, placeholder }) => {
+export const FormInput = ({ ...otherProps }) => {
   return (
-    <input type={type} id={id} value={value} onChange={onChange} placeholder={placeholder} className="form__input" />
+    <input {...otherProps} className="form__input" />
   );
 }
+
+export const FormTextArea = ({ ...otherProps }) => {
+  return <textarea className='form__textarea' {...otherProps}></textarea>
+}
+
 /*
     bsCustomPrefix?: string;
     htmlSize?: number;

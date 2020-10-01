@@ -1,16 +1,17 @@
 import {
+  ADD_COMMENT,
   APPROVE_COMMENT,
   DELETE_COMMENT,
   RESTORE_COMMENT,
   TRASH_COMMENT,
   UNAPPROVE_COMMENT,
 } from "./comment.action";
-import { setCommentStatus, deleteComment } from "./comment.util";
+import { setCommentStatus, deleteComment, addComment } from "./comment.util";
 
 const INITIAL_STATE = {
   comments: [
     {
-      id: "1",
+      id: 1,
       status: "Approved",
       author: {
         name: "Taste So Good",
@@ -22,7 +23,7 @@ const INITIAL_STATE = {
       date: "2020/03/17 at 9:10 am",
     },
     {
-      id: "2",
+      id: 2,
       status: "Approved",
       author: {
         name: "Phuong",
@@ -34,7 +35,7 @@ const INITIAL_STATE = {
       date: "2020/03/17 at 9:10 am",
     },
     {
-      id: "3",
+      id: 3,
       status: "Pending",
       author: {
         name: "My mine",
@@ -46,7 +47,7 @@ const INITIAL_STATE = {
       date: "2020/03/17 at 9:10 am",
     },
     {
-      id: "4",
+      id: 4,
       status: "Trash",
       author: {
         name: "Somebody Else",
@@ -61,6 +62,11 @@ const INITIAL_STATE = {
 
 const commentReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
+    case ADD_COMMENT:
+      return {
+        ...state,
+        comments: addComment(state.comments, action.payload),
+      };
     case APPROVE_COMMENT:
       return {
         ...state,

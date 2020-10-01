@@ -1,3 +1,8 @@
+export const addComment = (comments, newComment) => {
+  newComment.id = comments.length;
+  return [...comments, newComment];
+};
+
 export const deleteComment = (comments, selComment) => {
   return comments.filter((comment) => comment.id !== selComment.id);
 };

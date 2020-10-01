@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
-import { createEditor, Node } from 'slate';
+import { createEditor, Node, Text } from 'slate';
 import { Slate, Editable, withReact } from "slate-react";
 
 import MarkButton from './MarkButton';
@@ -18,17 +18,150 @@ import SlateDropdrown from './SlateDropdown';
 import BlockStyleButton from './BlockStyleButton';
 import { Button } from '../../../../components/button/Button';
 
-import Html from "slate-html-serializer";
+import escapeHtml from "escape-html";
+import { jsx } from 'slate-hyperscript'
+
+
+/*
+const RULES = [
+  {
+    deserialize(el, next) {
+      const block = BLOCK_TAGS[el.tagName.toLowerCase()];
+      if (block) {
+        return {
+          object: 'block',
+          type: block,
+          data: {
+            className: el.getAttribute('class'),
+          },
+          nodes: next(el.childNodes),
+        }
+      }
+    },
+    serialize(obj, children) {
+      if (obj.object == 'block')
+        switch (obj.type) {
+          case (BLOCK_TAGS.p):
+            return <p className={obj.data.get('className')}>{children}</p>
+          case (BLOCK_TAGS.h1):
+            return <h1 className={obj.data.get('className')}>{children}</h1>
+          case (BLOCK_TAGS.h2):
+            return <h2 className={obj.data.get('className')}>{children}</h2>
+          case (BLOCK_TAGS.h3):
+            return <h3 className={obj.data.get('className')}>{children}</h3>
+        }
+    }
+  },
+  {
+    deserialze(el, next) {
+      const type = MARK_TAGS[el.tagName.toLowerCase()];
+      if (type) {
+        return {
+          object: 'mark',
+          type: type,
+          nodes: next(el.childNodes),
+        }
+      }
+    },
+
+    serialize(obj, children) {
+      if (obj.object == 'mark') {
+        switch (obj.type) {
+          case MARK_TAGS.strong:
+            return <strong>{children}</strong>
+          case MARK_TAGS.em:
+            return <em>{children}</em>
+          case MARK_TAGS.u:
+            return <u>{children}</u>
+
+        }
+      }
+    }
+  }
+];
+const html = new Html({ rules: RULES });
+
+*/
+
+const serialize = node => {
+  if (Text.isText(node)) {
+    return escapeHtml(node.text);
+  }
+
+  const children = node.children.map(n => serialize(n)).join('');
+  switch (node.type) {
+    case (BLOCK_TAGS.p):
+      return `<p>${children}</p>`
+    case (BLOCK_TAGS.h1):
+      return `<h1>${children}</h1>`
+    case (BLOCK_TAGS.h2):
+      return `<h2>${children}</h2>`
+    case (BLOCK_TAGS.h3):
+      return `<h3>${children}</h3>`
+    case MARK_TAGS.strong:
+      return `<strong>${children}</strong>`
+    case MARK_TAGS.em:
+      return `<em>${children}</em>`
+    case MARK_TAGS.u:
+      return `<u>${children}</u>`
+  }
+}
+
+const deserialize = el => {
+  if (el.nodeType === 3)
+    return el.textContent;
+  if (el.nodeType !== 1)
+    return null;
+
+  const children = Array.from(el.childNodes).map(deserialize);
+  console.log(children);
+  switch (el.nodeName) {
+    case 'BODY':
+      return jsx('fragment', {}, children)
+    case 'BR':
+      return '\n'
+    case 'BLOCKQUOTE':
+      return jsx('element', { type: 'quote' }, children)
+    case 'P':
+      return jsx('element', { type: BLOCK_TAGS.p }, children)
+    case 'H1':
+      return jsx('element', { type: BLOCK_TAGS.h1 }, children)
+    case 'H2':
+      return jsx('element', { type: BLOCK_TAGS.h2 }, children)
+    case 'H3':
+      return jsx('element', { type: BLOCK_TAGS.h3 }, children)
+    case 'A':
+      return jsx(
+        'element',
+        { type: 'link', url: el.getAttribute('href') },
+        children
+      )
+    default:
+      return el.textContent
+  }
+}
+
+
+const parseHtmlToSlate = (str) => {
+  const document = new DOMParser().parseFromString(str, 'text/html');
+  return deserialize(document.body);
+}
+
+const parseSlateToHtml = (node) => {
+  const abc = node.map(child => serialize(child)).join('');
+  return abc;
+}
+
+const parseSlateToPlain = nodes => {
+  const abc = nodes.map((n) => Node.string(n)).join(' ');
+  return abc;
+}
 
 const PhTextEditor = ({ content, onSave }) => {
 
   const editor = useMemo(() => withReact(createEditor()), []);
   const [value, setValue] = useState(
-    (content != '') ? JSON.parse(content) : [
-      {
-        type: 'paragraph',
-        children: [{ text: 'A line of text in a paragraph.' }],
-      },]
+    (content != '') ? parseHtmlToSlate(content) : parseHtmlToSlate('<p>asd</p>')
   );
 
   const renderElement = useCallback(props => <Element {...props} />, []);
@@ -37,7 +170,8 @@ const PhTextEditor = ({ content, onSave }) => {
   const onValueChange = (newValue) => {
     setValue(newValue);
   }
-  return < div className={styles.textEditor} >
+
+  return <div className={styles.textEditor} >
     <Slate editor={editor} value={value} onChange={onValueChange}>
 
       <div className={styles.toolBar}>
@@ -73,7 +207,7 @@ const PhTextEditor = ({ content, onSave }) => {
         </div>
 
         <div className={styles.toolBarItem}>
-          <Button onClick={() => onSave(JSON.stringify(value))} variant='primary'>Save</Button>
+          <Button onClick={() => onSave(parseSlateToHtml(value), parseSlateToPlain(value))} variant='primary'>Save</Button>
         </div>
 
       </div>
@@ -113,8 +247,8 @@ const PhTextEditor = ({ content, onSave }) => {
           } />
       </div>
     </Slate>
-  </div >
-}
+  </div>
+};
 
 const BLOCK_TAGS = {
   p: 'paragraph',
@@ -204,61 +338,6 @@ const Leaf = ({ attributes, leaf, children }) => {
   return <span {...attributes}>{children}</span>
 }
 
-const RULES = [
-  {
-    deserialize(el, next) {
-      const block = BLOCK_TAGS[el.tagName.toLowerCase()];
-      if (block) {
-        return {
-          object: 'block',
-          type: block,
-          data: {
-            className: el.getAttribute('class'),
-          },
-          nodes: next(el.childNodes),
-        }
-      }
-    },
-    serialize(obj, children) {
-      if (obj.object == 'block')
-        switch (obj.type) {
-          case (BLOCK_TAGS.p):
-            return <p className={obj.data.get('className')}>{children}</p>
-          case (BLOCK_TAGS.h1):
-            return <h1 className={obj.data.get('className')}>{children}</h1>
-          case (BLOCK_TAGS.h2):
-            return <h2 className={obj.data.get('className')}>{children}</h2>
-          case (BLOCK_TAGS.h3):
-            return <h3 className={obj.data.get('className')}>{children}</h3>
-        }
-    }
-  },
-  {
-    deserialze(el, next) {
-      const type = MARK_TAGS[el.tagName.toLowerCase()];
-      if (type) {
-        return {
-          object: 'mark',
-          type: type,
-          nodes: next(el.childNodes),
-        }
-      }
-    },
 
-    serialize(obj, children) {
-      if (obj.object == 'mark') {
-        switch (obj.type) {
-          case MARK_TAGS.strong:
-            return <strong>{children}</strong>
-          case MARK_TAGS.em:
-            return <em>{children}</em>
-          case MARK_TAGS.u:
-            return <u>{children}</u>
-        }
-      }
-    }
-  }
-];
-const html = new Html({ rules });
 
 export default PhTextEditor;

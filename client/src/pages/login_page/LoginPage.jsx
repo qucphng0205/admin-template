@@ -17,7 +17,7 @@ const LoginPage = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (validateForm()) {       
+    if (validateForm()) {
 
     }
   }
@@ -29,16 +29,16 @@ const LoginPage = () => {
 
         <FormGroup>
           <FormLabel htmlFor="input-email">Email Address</FormLabel>
-          <FormInput type="email" id="login-input-email" onChange={handleEmailChange} />
+          <FormInput type="email" id="login-input-email" onChange={handleEmailChange} value={email} />
         </FormGroup>
 
         <FormGroup>
           <FormLabel htmlFor="input-email">Password</FormLabel>
-          <FormInput type="password" id="login-input-password" onChange={handlePasswordChange} />
+          <FormInput type="password" id="login-input-password" onChange={handlePasswordChange} value={password} />
         </FormGroup>
 
         <Button type="submit" variant="primary">Login</Button>
-        
+
       </Form>
     </div>
   );

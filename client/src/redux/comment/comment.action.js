@@ -1,8 +1,14 @@
+export const ADD_COMMENT = "ADD_COMMENT";
 export const APPROVE_COMMENT = "APPROVE_COMMENT";
 export const UNAPPROVE_COMMENT = "UNAPPROVE_COMMENT";
 export const TRASH_COMMENT = "TRASH_COMMENT";
 export const DELETE_COMMENT = "DELETE_COMMENT";
 export const RESTORE_COMMENT = "RESTORE_COMMENT";
+
+export const act_AddComment = (newComment) => ({
+  type: ADD_COMMENT,
+  payload: newComment,
+});
 
 export const act_ApproveComment = (selComment) => ({
   type: APPROVE_COMMENT,
